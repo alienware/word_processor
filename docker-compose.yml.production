@@ -1,0 +1,28 @@
+version: "3.3"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+    env_file:
+      - .env
+    ports:
+      - 9000:9000
+    volumes:
+      - ./:/app
+      - ~/.aws/credentials:/root/.aws/credentials:ro
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+    command: python worker/document_processor.py
+    env_file:
+      - .env
+    volumes:
+      - ./:/app
+      - ~/.aws/credentials:/root/.aws/credentials:ro
+
+
+

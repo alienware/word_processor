@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - 9001:9000
+    volumes:
+      - ./:/app
+      - ~/.aws/credentials:/root/.aws/credentials:ro
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python worker/document_processor.py
+    env_file:
+      - .env
+    volumes:
+      - ./:/app
+      - ~/.aws/credentials:/root/.aws/credentials:ro
